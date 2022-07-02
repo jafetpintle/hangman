@@ -1,5 +1,6 @@
 import random
 import os
+import unidecode
 
 #Hangman art by chrishorton
 HANGMANPICS = ['''
@@ -66,8 +67,8 @@ def read_words():#Read data file of words
 
 def fill_character(ch , word , result):
     for i in range(len(word)):
-        if(word[i] == ch):
-            result[i] = ch 
+        if(unidecode.unidecode(word[i].lower()) == ch):
+            result[i] = word[i] 
 
 def run():
     clear_console()
@@ -84,7 +85,7 @@ def run():
         try:
             if len(ch)!=1 or ch.isnumeric():
                 raise ValueError("Please, only use letters")
-            fill_character(ch, word_splited, word_result)
+            fill_character(unidecode.unidecode(ch.lower()), word_splited, word_result)
         except ValueError as ve:
             print(ve)
         
