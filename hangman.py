@@ -1,3 +1,6 @@
+import random
+import os
+
 #Hangman art by chrishorton
 HANGMANPICS = ['''
   +---+
@@ -50,6 +53,8 @@ HANGMANPICS = ['''
       |
 =========''']
 
+def clear_console():
+    os.system('clear')
 
 def read_words():#Read data file of words
     words = []
@@ -59,14 +64,33 @@ def read_words():#Read data file of words
             words.append(line)
     return words
 
+def fill_character(ch , word , result):
+    for i in range(len(word)):
+        if(word[i] == ch):
+            result[i] = ch 
 
 def run():
+    clear_console()
     words = read_words() #Words to play
     lives = 5 #Player lives
+    word = words[random.randint(0,len(words))] #Random word to play
+    word_splited = list(word)
+    word_result = list(map(lambda under: "_", word_splited))
+    print(word)
+    while(word_result!=word_splited):
+        print("GUESS THE WORD")
+        print(word_result)
+        ch = input("Enter a letter: ")
+        try:
+            if len(ch)!=1 or ch.isnumeric():
+                raise ValueError("Please, only use letters")
+            fill_character(ch, word_splited, word_result)
+        except ValueError as ve:
+            print(ve)
+        
 
-    while(lives > 0 ):
-        pass
     print("*******FIN DEL JUEGO*******")
+    print("The word was: "+ word)
 
     
     
