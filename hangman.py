@@ -1,3 +1,4 @@
+from pickle import FALSE, TRUE
 import random
 import os
 import unidecode
@@ -65,10 +66,14 @@ def read_words():#Read data file of words
             words.append(line)
     return words
 
-def fill_character(ch , word , result):
+def exist_character(ch , word , result): #Check if character exist and fill it in the list
+    ch_flag = False #Flag to check if character exists in the word
     for i in range(len(word)):
         if(unidecode.unidecode(word[i].lower()) == ch):
-            result[i] = word[i] 
+            result[i] = word[i]
+            ch_flag = True
+    return ch_flag
+        
 
 def run():
     clear_console()
@@ -78,14 +83,15 @@ def run():
     word_splited = list(word)
     word_result = list(map(lambda under: "_", word_splited))
     print(word)
-    while(word_result!=word_splited):
+    while(word_result!=word_splited and lives>0):
         print("GUESS THE WORD")
         print(word_result)
         ch = input("Enter a letter: ")
         try:
             if len(ch)!=1 or ch.isnumeric():
                 raise ValueError("Please, only use letters")
-            fill_character(unidecode.unidecode(ch.lower()), word_splited, word_result)
+            if(not exist_character(unidecode.unidecode(ch.lower()), word_splited, word_result)):
+                lives-=1
         except ValueError as ve:
             print(ve)
         
