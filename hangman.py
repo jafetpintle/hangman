@@ -91,6 +91,16 @@ END_MESSAGES = ['''
                                                             
 ''' ]
 
+HANGMAN = '''
+                                                                                 
+ #    #   ##   #    #  ####  #    #   ##   #    #     ####    ##   #    # ###### 
+ #    #  #  #  ##   # #    # ##  ##  #  #  ##   #    #    #  #  #  ##  ## #      
+ ###### #    # # #  # #      # ## # #    # # #  #    #      #    # # ## # #####  
+ #    # ###### #  # # #  ### #    # ###### #  # #    #  ### ###### #    # #      
+ #    # #    # #   ## #    # #    # #    # #   ##    #    # #    # #    # #      
+ #    # #    # #    #  ####  #    # #    # #    #     ####  #    # #    # ###### 
+                                                                                 '''
+
 def clear_console():
     os.system('clear')
 
@@ -114,27 +124,29 @@ def exist_character(ch , word , result): #Check if character exist and fill it i
 def run():
     clear_console()
     words = read_words() #Words to play
-    lives = 5 #Player lives
+    tries = 0 #Player tries
     word = words[random.randint(0,len(words))] #Random word to play
     word_splited = list(word)
     word_result = list(map(lambda under: "_", word_splited))
-    print(word)
-    while(word_result!=word_splited and lives>0):
-        print("GUESS THE WORD")
+    while(word_result!=word_splited and tries < 6):
+        print(HANGMAN)
+        print(HANGMANPICS[tries])
         print(word_result)
         ch = input("Enter a letter: ")
         try:
             if len(ch)!=1 or ch.isnumeric():
                 raise ValueError("Please, only use letters")
             if(not exist_character(unidecode.unidecode(ch.lower()), word_splited, word_result)):
-                lives-=1
+                tries+=1
         except ValueError as ve:
             print(ve)
+        clear_console()
     
-    if(lives > 0):
+    if(tries < 6):
         print(END_MESSAGES[0])
     else:
         print(END_MESSAGES[1])
+    print(HANGMANPICS[tries])
     print("The word was: "+ word)
 
     
